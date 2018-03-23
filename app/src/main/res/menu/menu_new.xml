@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.sam.choosu.NewActivity">
+    <item
+        android:id="@+id/choos_u"
+        app:showAsAction="always"
+        android:title="Choose"/>
+    <item
+        android:id="@+id/choosen_U"
+        app:showAsAction="always"
+        android:title="Choosen"/>
+</menu>
