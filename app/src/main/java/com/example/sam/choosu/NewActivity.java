@@ -49,7 +49,7 @@ public class NewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.choos_u:
 
-            case R.id.choosen_U;
+            case R.id.choosen_u:
 
 
 

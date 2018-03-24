@@ -7,7 +7,7 @@
         app:showAsAction="always"
         android:title="Choose"/>
     <item
-        android:id="@+id/choosen_U"
+        android:id="@+id/choosen_u"
         app:showAsAction="always"
         android:title="Choosen"/>
 </menu>
