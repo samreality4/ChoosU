@@ -73,7 +73,7 @@ public class YelpProvider extends ContentProvider{
                 return YelpContract.YelpEntry.CONTENT_DIR_TYPE;
             }
             case RESTAURANTS_WITH_ID: {
-                case YelpContract.YelpEntry.CONTENT_ITEM_TYPE ;
+                return YelpContract.YelpEntry.CONTENT_ITEM_TYPE;
 
             }
             default: {

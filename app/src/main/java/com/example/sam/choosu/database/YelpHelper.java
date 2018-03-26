@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class YelpHelper extends SQLiteOpenHelper{
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "YELP_CHOOSE_DB"
+    public static final String DATABASE_NAME = "YELP_CHOOSE_DB";
 
     public YelpHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +26,7 @@ public class YelpHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS" + YelpContract.YelpEntry.TABLE_YELP);
+            db.execSQL("DROP TABLE IF EXISTS " + YelpContract.YelpEntry.TABLE_YELP);
             onCreate(db);
         }
 
