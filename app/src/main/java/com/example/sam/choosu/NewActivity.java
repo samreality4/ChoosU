@@ -1,5 +1,9 @@
 package com.example.sam.choosu;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,10 +14,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sam.choosu.database.YelpContract;
+
 import java.util.zip.Inflater;
 
 
-public class NewActivity extends AppCompatActivity {
+public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +62,30 @@ public class NewActivity extends AppCompatActivity {
 
         }
 
-
-
-
         return super.onOptionsItemSelected(item);
+
     }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args){
+        return  new CursorLoader(this,
+                YelpContract.YelpEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+
 }

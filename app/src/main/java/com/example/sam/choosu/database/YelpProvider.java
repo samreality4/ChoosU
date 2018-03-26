@@ -28,6 +28,7 @@ public class YelpProvider extends ContentProvider{
 
         matcher.addURI(authority, YelpContract.YelpEntry.TABLE_YELP, RESTAURANTS);
         matcher.addURI(authority, YelpContract.YelpEntry.TABLE_YELP, RESTAURANTS_WITH_ID);
+        return matcher;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class YelpProvider extends ContentProvider{
         }
 
         mCursor.setNotificationUri(getContext().getContentResolver(),uri);
-        return mCursor
+        return mCursor;
 
     }
 
