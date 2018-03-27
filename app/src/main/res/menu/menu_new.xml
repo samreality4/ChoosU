@@ -4,10 +4,12 @@
     tools:context="com.example.sam.choosu.NewActivity">
     <item
         android:id="@+id/choos_u"
+        android:title="Choose"
         app:showAsAction="always"
-        android:title="Choose"/>
+        android:orderInCategory="1"/>
     <item
         android:id="@+id/choosen_u"
         app:showAsAction="always"
-        android:title="Choosen"/>
+        android:title="Choosen"
+        android:orderInCategory="2"/>
 </menu>

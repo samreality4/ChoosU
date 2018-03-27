@@ -1,7 +1,9 @@
 package com.example.sam.choosu;
 
+import android.app.ActionBar;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,8 +27,11 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +41,25 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                         .setAction("Action", null).show();
             }
         });
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent);
+            }
+        }
+    }
+
+
+        void handleSendText(Intent intent){
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if(sharedText !=null){
+    }
+
+
     }
 
     @Override
@@ -54,10 +78,10 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
         switch (item.getItemId()) {
             case R.id.choos_u:
+                return true;
 
             case R.id.choosen_u:
-
-
+                return true;
 
 
         }
