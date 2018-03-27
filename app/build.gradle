@@ -28,5 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation'com.android.support:cardview-v7:26.1.0'
     implementation'org.jsoup:jsoup:1.11.2'
+    implementation'com.leocardz:link-preview:2.0.0@aar'
 
 }

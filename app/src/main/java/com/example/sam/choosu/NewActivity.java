@@ -2,6 +2,7 @@ package com.example.sam.choosu;
 
 import android.app.ActionBar;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.sam.choosu.database.YelpContract;
 
@@ -22,6 +24,9 @@ import java.util.zip.Inflater;
 
 
 public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    String name;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +51,18 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         String action = intent.getAction();
         String type = intent.getType();
 
+
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
             }
         }
+
+        ContentValues values = new ContentValues();
+        values.put(YelpContract.YelpEntry.KEY_NAME,name);
+        values.put(YelpContract.YelpEntry.KEY_URL, url);
+
+
     }
 
 
