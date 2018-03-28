@@ -3,6 +3,7 @@ package com.example.sam.choosu;
 import android.app.ActionBar;
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
@@ -27,14 +29,15 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 
-public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    String [] array;
     String name;
     String url;
     private RecyclerView restaurantList;
     private YelpCursorAdapter yelpCursorAdapter;
     List<YelpModel> list = new ArrayList<>();
-
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -63,33 +65,33 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
-                handleSendUrl(intent);
+                //handleSendUrl(intent);
             }
         }
 
         ContentValues values = new ContentValues();
-        values.put(YelpContract.YelpEntry.KEY_NAME,name);
+        values.put(YelpContract.YelpEntry.KEY_NAME, name);
         values.put(YelpContract.YelpEntry.KEY_URL, url);
 
 
     }
 
 
-        void handleSendText(Intent intent) {
-            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (sharedText != null) {
-                name = sharedText;
-            }
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            array = sharedText.split("\n\n");
+            name = array [0];
+            url = array [1];
         }
-
-        void handleSendUrl(Intent intent){
-                String sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
-                if(sharedUrl !=null){
-                    url = sharedUrl;
-                }
     }
 
-
+   /* void handleSendUrl(Intent intent) {
+        String sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedUrl != null) {
+            url = sharedUrl;
+        }
+    }*/
 
 
     @Override
@@ -122,8 +124,8 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args){
-        return  new CursorLoader(this,
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this,
                 YelpContract.YelpEntry.CONTENT_URI,
                 null,
                 null,
@@ -134,7 +136,11 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         list.clear();
-
+        restaurantFromCursor(data);
+        yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, list);
+        restaurantList = findViewById(R.id.choose_recyclerview);
+        restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
+        restaurantList.setAdapter(yelpCursorAdapter);
 
     }
 
@@ -143,16 +149,20 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    private List<YelpModel> restaurantFromCursor(Cursor cursor){
-        if(cursor != null){
-            if(cursor.moveToFirst()){
-                do{
+    private List<YelpModel> restaurantFromCursor(Cursor cursor) {
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
                     YelpModel yelpModel = new YelpModel();
-                    yelpModel.name = cursor.getString()
-                }
+                    yelpModel.name = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_NAME));
+                    yelpModel.url = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_URL));
+
+                    list.add(yelpModel);
+                } while (cursor.moveToNext());
             }
         }
+        return list;
+
+
     }
-
-
 }
