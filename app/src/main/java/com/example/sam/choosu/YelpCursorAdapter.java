@@ -28,8 +28,6 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_choose, parent, false);
@@ -44,7 +42,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YelpModel current = mData.get(position);
 
         myholder.name.setText(current.getName());
-        myholder.name.setText(current.getUrl());
+        myholder.url.setText(current.getUrl());
 
     }
 

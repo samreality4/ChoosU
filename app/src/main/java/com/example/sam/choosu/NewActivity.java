@@ -65,7 +65,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
-                //handleSendUrl(intent);
             }
         }
 
@@ -85,13 +84,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             url = array [1];
         }
     }
-
-   /* void handleSendUrl(Intent intent) {
-        String sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedUrl != null) {
-            url = sharedUrl;
-        }
-    }*/
 
 
     @Override
