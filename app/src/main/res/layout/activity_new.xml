@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-<include layout="@layout/content_new"/>
+<include layout="@layout/recyclerview_choose"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
