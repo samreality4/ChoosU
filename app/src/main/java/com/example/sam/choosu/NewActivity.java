@@ -47,6 +47,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        context = getApplicationContext();
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -72,12 +73,9 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
                 getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
                 Log.i("values", String.valueOf(values));
-
-                getSupportLoaderManager().initLoader(0, null, this);
-
             }
         }
-
+        getSupportLoaderManager().initLoader(0, null, this);
 
 
         }
