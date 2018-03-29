@@ -40,9 +40,10 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         YelpCursorAdapter.Myholder myholder = (YelpCursorAdapter.Myholder) holder;
         YelpModel current = mData.get(position);
-
-        myholder.name.setText(current.getName());
-        myholder.url.setText(current.getUrl());
+if(current != null) {
+    myholder.name.setText(current.getName());
+    myholder.url.setText(current.getUrl());
+}
 
     }
 

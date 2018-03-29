@@ -66,19 +66,23 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
+                ContentValues values = new ContentValues();
+                values.put(YelpContract.YelpEntry.KEY_NAME, name);
+                values.put(YelpContract.YelpEntry.KEY_URL, url);
+
+                getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
+                Log.i("values", String.valueOf(values));
+
+                getSupportLoaderManager().initLoader(0, null, this);
+
             }
         }
 
-        ContentValues values = new ContentValues();
-        values.put(YelpContract.YelpEntry.KEY_NAME, name);
-        values.put(YelpContract.YelpEntry.KEY_URL, url);
 
-        getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
-        Log.i("values",String.valueOf(values));
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        }
 
-    }
+
 
 
     void handleSendText(Intent intent) {
@@ -120,7 +124,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     }
 
 
-   /* @Override
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 YelpContract.YelpEntry.CONTENT_URI,
@@ -128,19 +132,17 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 null,
                 null,
                 null);
-    }*/
+    }
 
-    /*@Override
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        cursorList.clear();
         restaurantFromCursor(data);
         yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
         restaurantList = findViewById(R.id.choose_recyclerview);
         restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
         restaurantList.setAdapter(yelpCursorAdapter);
 
-
-    }*/
+    }
 
 
     @Override
@@ -165,24 +167,5 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this,
-                YelpContract.YelpEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        cursorList.clear();
-        restaurantFromCursor(data);
-        yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
-        restaurantList = findViewById(R.id.choose_recyclerview);
-        restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
-        restaurantList.setAdapter(yelpCursorAdapter);
-
-    }
 }
