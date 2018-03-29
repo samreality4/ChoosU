@@ -1,20 +1,21 @@
 package com.example.sam.choosu;
 
 import android.app.ActionBar;
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
@@ -29,14 +30,14 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 
-public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     String [] array;
     String name;
     String url;
     private RecyclerView restaurantList;
     private YelpCursorAdapter yelpCursorAdapter;
-    List<YelpModel> list = new ArrayList<>();
+    List<YelpModel> cursorList = new ArrayList<>();
     Context context;
 
     @Override
@@ -72,6 +73,10 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         values.put(YelpContract.YelpEntry.KEY_NAME, name);
         values.put(YelpContract.YelpEntry.KEY_URL, url);
 
+        getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
+        Log.i("values",String.valueOf(values));
+
+        getSupportLoaderManager().initLoader(0, null, this);
 
     }
 
@@ -115,7 +120,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     }
 
 
-    @Override
+   /* @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 YelpContract.YelpEntry.CONTENT_URI,
@@ -123,18 +128,20 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 null,
                 null,
                 null);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        list.clear();
+        cursorList.clear();
         restaurantFromCursor(data);
-        yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, list);
+        yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
         restaurantList = findViewById(R.id.choose_recyclerview);
         restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
         restaurantList.setAdapter(yelpCursorAdapter);
 
-    }
+
+    }*/
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -149,12 +156,33 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                     yelpModel.name = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_NAME));
                     yelpModel.url = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_URL));
 
-                    list.add(yelpModel);
+                    cursorList.add(yelpModel);
                 } while (cursor.moveToNext());
             }
         }
-        return list;
+        return cursorList;
 
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this,
+                YelpContract.YelpEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cursorList.clear();
+        restaurantFromCursor(data);
+        yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
+        restaurantList = findViewById(R.id.choose_recyclerview);
+        restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
+        restaurantList.setAdapter(yelpCursorAdapter);
 
     }
 }

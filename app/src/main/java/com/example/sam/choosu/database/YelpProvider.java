@@ -27,7 +27,7 @@ public class YelpProvider extends ContentProvider{
         final String authority = YelpContract.AUTHORITY;
 
         matcher.addURI(authority, YelpContract.YelpEntry.TABLE_YELP, RESTAURANTS);
-        matcher.addURI(authority, YelpContract.YelpEntry.TABLE_YELP, RESTAURANTS_WITH_ID);
+        matcher.addURI(authority, YelpContract.YelpEntry.TABLE_YELP + "/#", RESTAURANTS_WITH_ID);
         return matcher;
     }
 
