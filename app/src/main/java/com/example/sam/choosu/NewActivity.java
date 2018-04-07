@@ -49,6 +49,13 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         context = getApplicationContext();
 
+        if(savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, new CardFrontFragment())
+                    .commit();
+        }
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -137,8 +144,13 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         restaurantFromCursor(data);
         yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
         restaurantList = findViewById(R.id.choose_recyclerview);
+        /*restaurantList.setHasFixedSize(true);
+        restaurantList.setItemViewCacheSize(20);
+        restaurantList.setDrawingCacheEnabled(true);
+        restaurantList.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
         restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
         restaurantList.setAdapter(yelpCursorAdapter);
+
 
     }
 
