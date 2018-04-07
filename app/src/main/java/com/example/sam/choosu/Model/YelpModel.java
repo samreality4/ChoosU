@@ -18,4 +18,11 @@ public class YelpModel {
     public String getUrl(){
         return url;
     }
+
+    public String imageurl;
+
+    public String getYelpImageurl(){
+        return imageurl;
+
+    }
 }

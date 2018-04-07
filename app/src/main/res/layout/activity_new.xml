@@ -26,8 +26,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/recyclerview_choose"
-        />
+        layout="@layout/recyclerview_choose"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

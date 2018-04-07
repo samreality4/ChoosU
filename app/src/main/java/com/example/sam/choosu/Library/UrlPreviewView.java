@@ -140,7 +140,7 @@ public class UrlPreviewView extends LinearLayout{
             return meta;
         }
 
-        public void setLink(String url, final ViewListener viewListener) {
+       /* public void setLink(String url, final ViewListener viewListener) {
             main_url = url;
             UrlPreview urlPreview = new UrlPreview(new ResponseListener() {
                 @Override
@@ -159,6 +159,6 @@ public class UrlPreviewView extends LinearLayout{
                 }
             });
             urlPreview.getPreview(url);
-        }
+        }*/
 
     }

@@ -19,13 +19,15 @@ public class YelpContract {
         public static final String TABLE_YELP = "Data_Yelp";
         public static final String KEY_NAME = "name";
         public static final String KEY_URL = "URL";
+        public static final String KEY_IMAGE_URL = "image_url";
 
         //setting up the table with the primary key and the two columns
         //bad spacing will create error
         public static String CREATE_YELP_TABLE = "CREATE TABLE " + TABLE_YELP + " (" + _ID
-                + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_URL + " TEXT)";
+                + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_URL + " TEXT," +
+                KEY_IMAGE_URL + " TEXT)";
 
-        public static String[] Columns = new String[]{_ID, KEY_NAME, KEY_URL};
+        public static String[] Columns = new String[]{_ID, KEY_NAME, KEY_URL, KEY_IMAGE_URL};
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(TABLE_YELP).build();

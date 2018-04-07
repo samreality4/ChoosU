@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -18,8 +19,8 @@
         android:text="Hello World!"
         android:layout_gravity="top"
         android:paddingBottom="10dp"/>
-    <com.example.sam.choosu.Library.UrlPreviewView
-        android:id="@+id/url"
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -27,3 +28,4 @@
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
+
