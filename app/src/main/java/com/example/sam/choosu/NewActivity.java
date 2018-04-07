@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.sam.choosu.Library.MetaData;
+import com.example.sam.choosu.Library.ResponseListener;
 import com.example.sam.choosu.Library.UrlPreview;
 import com.example.sam.choosu.Library.UrlPreviewView;
 import com.example.sam.choosu.Model.YelpModel;
@@ -81,8 +82,20 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
                 ContentValues values = new ContentValues();
-                UrlPreview urlPreview = new UrlPreview();
+                UrlPreview urlPreview = new UrlPreview(new ResponseListener() {
+                    @Override
+                    public void onData(MetaData metaData) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+
+                });
                 urlPreview.getPreview(url);
+
                 MetaData metaData = new MetaData();
                 imageurl = metaData.getImageUrl();
 

@@ -22,8 +22,8 @@ public class UrlPreview {
     ResponseListener responseListener;
     String url;
 
-    public UrlPreview() {
-        //this.responseListener = responseListener;
+    public UrlPreview(ResponseListener responseListener) {
+        this.responseListener = responseListener;
         metaData = new MetaData();
 
     }
