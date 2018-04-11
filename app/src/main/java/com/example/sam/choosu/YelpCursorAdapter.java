@@ -46,10 +46,10 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YelpModel current = mData.get(position);
         //Log.e("error", current.getName());
             myHolder.name.setText(current.getName());
-        Picasso.get()
+        /*Picasso.get()
                 .load(current.getYelpImageurl())
                 .fit()
-                .into(((MyHolder) holder).image);
+                .into(((MyHolder) holder).image);*/
 
 
         /*myHolder.url.setLink(current.getUrl(), new ViewListener() {
@@ -81,12 +81,12 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView name;
-        ImageView image;
+        //ImageView image;
 
         public MyHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            image = itemView.findViewById(R.id.image);
+            //image = itemView.findViewById(R.id.image);
 
 
 

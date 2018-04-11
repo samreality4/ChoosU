@@ -54,64 +54,69 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         context = getApplicationContext();
 
-        /*if(savedInstanceState == null){
+
+
+
+            FloatingActionButton fab = findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fliCard();
+
+                    Collections.shuffle(cursorList);
+                    restaurantList.swapAdapter(yelpCursorAdapter, false);
+                }
+            });
+
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            String type = intent.getType();
+
+
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                if ("text/plain".equals(type)) {
+                    handleSendText(intent);
+
+                    UrlPreview urlPreview = new UrlPreview(new ResponseListener() {
+                        @Override
+                        public void onData(MetaData metaData) {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+
+                    });
+                    urlPreview.getPreview(url);
+                    //already getting metadata without waiting for it to finish
+                    MetaData metaData = new MetaData();
+                    imageurl = metaData.getImageUrl();
+
+
+
+                    ContentValues values = new ContentValues();
+
+                    values.put(YelpContract.YelpEntry.KEY_NAME, name);
+                    values.put(YelpContract.YelpEntry.KEY_URL, url);
+                    if(imageurl!=null){
+                    values.put(YelpContract.YelpEntry.KEY_IMAGE_URL, imageurl);}
+
+                    getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
+                    Log.i("values", String.valueOf(values));
+                }
+            }
+            getSupportLoaderManager().initLoader(0, null, this);
+
+              /*CardFrontFragment cardFrontFragment = new CardFrontFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.frame_container, new CardFrontFragment())
-                    .commit();
-        }*/
+                    .add(R.id.frame_layout_container, cardFrontFragment)
+                    .commit();*/
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              // fliCard();
-
-                Collections.shuffle(cursorList);
-                restaurantList.swapAdapter(yelpCursorAdapter,false);
-            }
-        });
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-
-
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent);
-                ContentValues values = new ContentValues();
-                UrlPreview urlPreview = new UrlPreview(new ResponseListener() {
-                    @Override
-                    public void onData(MetaData metaData) {
-
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-
-                });
-                urlPreview.getPreview(url);
-
-                MetaData metaData = new MetaData();
-                imageurl = metaData.getImageUrl();
-
-
-                values.put(YelpContract.YelpEntry.KEY_NAME, name);
-                values.put(YelpContract.YelpEntry.KEY_URL, url);
-                values.put(YelpContract.YelpEntry.KEY_IMAGE_URL, imageurl);
-
-                getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
-                Log.i("values", String.valueOf(values));
-            }
-        }
-        getSupportLoaderManager().initLoader(0, null, this);
-
-
-        }
+    }
 
 
 
@@ -155,7 +160,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     }
 
 
-    @Override
+   @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 YelpContract.YelpEntry.CONTENT_URI,
@@ -170,10 +175,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         restaurantFromCursor(data);
         yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
         restaurantList = findViewById(R.id.choose_recyclerview);
-        /*restaurantList.setHasFixedSize(true);
-        restaurantList.setItemViewCacheSize(20);
-        restaurantList.setDrawingCacheEnabled(true);
-        restaurantList.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
         restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
         restaurantList.setAdapter(yelpCursorAdapter);
 
@@ -193,7 +194,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                     YelpModel yelpModel = new YelpModel();
                     yelpModel.name = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_NAME));
                     yelpModel.url = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_URL));
-                    yelpModel.imageurl = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_IMAGE_URL));
+                    //yelpModel.imageurl = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_IMAGE_URL));
                     cursorList.add(yelpModel);
                 } while (cursor.moveToNext());
             }
@@ -213,7 +214,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                         R.anim.card_flip_right_out,
                         R.anim.card_flip_left_in,
                         R.anim.card_flip_left_out)
-                .replace(R.id.frame_container, new CardBackFragment())
+                .add(R.id.empty_container, new CardBackFragment())
 
                 .addToBackStack(null)
 

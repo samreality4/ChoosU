@@ -31,6 +31,7 @@ public class UrlPreview {
     public void getPreview(String url) {
         this.url = url;
         new getData().execute();
+
     }
 
     private class getData extends AsyncTask<Void, Void, Void> {
@@ -38,7 +39,7 @@ public class UrlPreview {
 
         @Override
         protected Void doInBackground(Void... params) {
-            HttpURLConnection conn;
+
             Document doc = null;
             try {
                 doc = Jsoup.connect(url).get();
@@ -86,6 +87,7 @@ public class UrlPreview {
                     String image = imageElements.attr("content");
                     if (!image.isEmpty()) {
                         metaData.setImageUrl(resolveURL(url, image));
+
                     }
                 }
                 if (metaData.getImageUrl().isEmpty()) {
