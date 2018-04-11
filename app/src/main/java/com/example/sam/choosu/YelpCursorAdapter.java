@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sam.choosu.Library.UrlPreviewView;
-import com.example.sam.choosu.Library.ViewListener;
 import com.example.sam.choosu.Model.YelpModel;
 import com.squareup.picasso.Picasso;
 
@@ -46,27 +44,13 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         YelpModel current = mData.get(position);
         //Log.e("error", current.getName());
             myHolder.name.setText(current.getName());
-        /*Picasso.get()
-                .load(current.getYelpImageurl())
-                .fit()
-                .into(((MyHolder) holder).image);*/
-
-
-        /*myHolder.url.setLink(current.getUrl(), new ViewListener() {
-
-            @Override
-            public void onSuccess(boolean status) {
-
-
+            if(!current.getYelpImageurl().isEmpty()) {
+                Picasso.get()
+                        .load(current.getYelpImageurl())
+                        .resize(300, 300)
+                        .into(((MyHolder) holder).image);
 
             }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });*/
-
     }
 
 
@@ -81,12 +65,12 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView name;
-        //ImageView image;
+        ImageView image;
 
         public MyHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            //image = itemView.findViewById(R.id.image);
+            image = itemView.findViewById(R.id.image);
 
 
 
