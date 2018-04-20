@@ -4,6 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+
 
     <application
         android:allowBackup="true"
@@ -29,9 +32,27 @@
         </activity>
         <provider
             android:authorities="com.example.sam.choosu"
-            android:name=".database.YelpProvider"
+            android:name=".Database.YelpProvider"
             android:exported="false"
             android:syncable="true"/>
+
+        <receiver
+            android:label="Example Widget"
+            android:name=".Widget.NewAppWidgetProvider" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <service android:name=".Widget.NewAppRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+
+
     </application>
 
 </manifest>
