@@ -15,7 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class AppRemoteViewsService extends RemoteViewsService {
+public class NewAppRemoteViewsService extends RemoteViewsService {
+
+    int n;
 
 
     @Override
@@ -69,12 +71,12 @@ public class AppRemoteViewsService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int position) {
-            RemoteViews rv = new RemoteViews(context.getPackageName(), R.id.widget_item);
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
 
             rv.setTextViewText(R.id.item,
                     String.valueOf(yelpModelList.get(position).getName()));
-            rv.setTextViewText(R.id.position,
-                    String.valueOf(yelpModelList.get(position)) + "1");
+
+           rv.setTextViewText(R.id.position, yelpModelList.get(position).getIdNumber() + ". " );
             return rv;
         }
 

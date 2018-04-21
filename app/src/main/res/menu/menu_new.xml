@@ -3,13 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.sam.choosu.NewActivity">
     <item
+        android:id="@+id/clear_choices"
+        android:title="clear"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_clear_db" />
+    <item
         android:id="@+id/choos_u"
         android:title="Choose"
+        android:icon="@drawable/ic_select"
         app:showAsAction="always"
-        android:orderInCategory="1"/>
+        android:orderInCategory="1" />
     <item
         android:id="@+id/choosen_u"
         app:showAsAction="always"
         android:title="Choosen"
-        android:orderInCategory="2"/>
+        android:icon="@drawable/ic_favorite"
+        android:orderInCategory="2" />
+    <item
+        android:id="@+id/sign_out"
+        app:showAsAction="ifRoom"
+        android:title="Sign Off" />
 </menu>

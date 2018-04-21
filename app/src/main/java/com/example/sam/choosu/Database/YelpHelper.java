@@ -1,4 +1,4 @@
-package com.example.sam.choosu.database;
+package com.example.sam.choosu.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

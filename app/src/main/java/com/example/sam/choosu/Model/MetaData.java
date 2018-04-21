@@ -1,4 +1,4 @@
-package com.example.sam.choosu.Library;
+package com.example.sam.choosu.Model;
 
 /**
  * Created by sam on 4/1/18.
@@ -27,13 +27,15 @@ public class MetaData {
         this.title = title;
     }
 
+    public void setImageUrl(String imageurl){
+        this.imageurl = imageurl;
+    }
+
+
     public String getImageUrl(){
         return imageurl;
     }
 
-    public void setImageUrl(String imageurl){
-        this.imageurl = imageurl;
-    }
 
     public void setSitename(String sitename){
         this.sitename = sitename;

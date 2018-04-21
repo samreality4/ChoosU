@@ -15,35 +15,31 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by sam on 3/27/18.
- */
-
-public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class YelpCursorEmptyCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context mContext;
     private LayoutInflater inflater;
     private List<YelpModel> mData;
-    public yelpClickListener listener;
+    public YelpCursorEmptyCardAdapter.yelpEmptyClickListener listener;
     String url;
 
-    public interface yelpClickListener{
-        void onYelpClickListener(View v, int position);
+    public interface yelpEmptyClickListener{
+        void onYelpEmptyClickListener(View v, int position);
     }
 
 
 
-    public YelpCursorAdapter(Context context, List<YelpModel> list) {
+    public YelpCursorEmptyCardAdapter(Context context, List<YelpModel> list) {
         this.mContext = context;
         this.mData = list;
-        this.listener = (YelpCursorAdapter.yelpClickListener) context;
+        this.listener = (YelpCursorEmptyCardAdapter.yelpEmptyClickListener) context;
         inflater = LayoutInflater.from(context);
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = inflater.inflate(R.layout.content_cardview, parent, false);
-        final YelpCursorAdapter.MyHolder myHolder = new YelpCursorAdapter.MyHolder(view);
+        final View view = inflater.inflate(R.layout.empty_cardview, parent, false);
+        final YelpCursorEmptyCardAdapter.MyHolder myHolder = new YelpCursorEmptyCardAdapter.MyHolder(view);
         view.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -54,7 +50,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }else{*/
                 if(listener !=null) {
 
-                    listener.onYelpClickListener(v, myHolder.getAdapterPosition());
+                    listener.onYelpEmptyClickListener(v, myHolder.getAdapterPosition());
                     YelpModel current = mData.get(myHolder.getAdapterPosition());
 
                     url = current.getUrl();
@@ -76,16 +72,16 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final YelpCursorAdapter.MyHolder myHolder = (YelpCursorAdapter.MyHolder) holder;
         YelpModel current = mData.get(position);
         //Log.e("error", current.getName());
-            myHolder.name.setText(current.getName());
-            if(!current.getYelpImageurl().isEmpty()) {
-                Picasso.get()
-                        .load(current.getYelpImageurl())
-                        .resize(350, 300)
-                        .into(((MyHolder) holder).image);
+        myHolder.name.setText(current.getName());
+        if(!current.getYelpImageurl().isEmpty()) {
+            Picasso.get()
+                    .load(current.getYelpImageurl())
+                    .resize(350, 300)
+                    .into(((YelpCursorAdapter.MyHolder) holder).image);
 
-                //notifyDataSetChanged();
+            //notifyDataSetChanged();
 
-            }
+        }
     }
 
 
@@ -109,11 +105,6 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
     }
-
-
-
-
-
 
 
 

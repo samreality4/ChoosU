@@ -1,4 +1,4 @@
-package com.example.sam.choosu.Library;
+package com.example.sam.choosu;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.sam.choosu.R;
-import com.squareup.picasso.MemoryPolicy;
+import com.example.sam.choosu.Model.MetaData;
 import com.squareup.picasso.Picasso;
 
 /**

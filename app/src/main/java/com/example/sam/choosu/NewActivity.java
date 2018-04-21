@@ -3,10 +3,12 @@ package com.example.sam.choosu;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,21 +21,27 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.URLUtil;
 
-import com.example.sam.choosu.Library.MetaData;
-import com.example.sam.choosu.Library.ResponseListener;
-import com.example.sam.choosu.Library.UrlPreview;
-import com.example.sam.choosu.Library.UrlPreviewView;
+import com.example.sam.choosu.Model.MetaData;
 import com.example.sam.choosu.Model.YelpModel;
-import com.example.sam.choosu.database.YelpContract;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
+import com.example.sam.choosu.Database.YelpContract;
+import com.google.gson.Gson;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        YelpCursorAdapter.yelpClickListener, YelpCursorEmptyCardAdapter.yelpEmptyClickListener{
 
     String [] array;
     String name;
@@ -41,9 +49,14 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     String imageurl;
     private RecyclerView restaurantList;
     private YelpCursorAdapter yelpCursorAdapter;
-    List<YelpModel> cursorList = new ArrayList<>();
+    private YelpCursorEmptyCardAdapter yelpCursorEmptyCardAdapter;
+    ArrayList<YelpModel> cursorList = new ArrayList<>();
     Context context;
     MetaData metaData;
+    private static final String PREF_NAME = "prefname";
+    private static final String PREF_KEY = "prefkey";
+
+    ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,71 +66,143 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         context = getApplicationContext();
+        metaData = new MetaData();
 
 
-
-
-            FloatingActionButton fab = findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fliCard();
-
-                    Collections.shuffle(cursorList);
-                    restaurantList.swapAdapter(yelpCursorAdapter, false);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //fliCard();
+                //cardView.setVisibility(View.INVISIBLE);
+                Collections.shuffle(cursorList);
+                    restaurantList.setAdapter(yelpCursorEmptyCardAdapter);
                 }
-            });
 
-            Intent intent = getIntent();
-            String action = intent.getAction();
-            String type = intent.getType();
+        });
 
-
-            if (Intent.ACTION_SEND.equals(action) && type != null) {
-                if ("text/plain".equals(type)) {
-                    handleSendText(intent);
-
-                    UrlPreview urlPreview = new UrlPreview(new ResponseListener() {
-                        @Override
-                        public void onData(MetaData metaData) {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-
-                        }
-
-                    });
-                    urlPreview.getPreview(url);
-                    //already getting metadata without waiting for it to finish
-                    MetaData metaData = new MetaData();
-                    imageurl = metaData.getImageUrl();
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
 
 
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent);
 
-                    ContentValues values = new ContentValues();
 
-                    values.put(YelpContract.YelpEntry.KEY_NAME, name);
-                    values.put(YelpContract.YelpEntry.KEY_URL, url);
-                    if(imageurl!=null){
-                    values.put(YelpContract.YelpEntry.KEY_IMAGE_URL, imageurl);}
+                //already getting metadata without waiting for it to finish
 
-                    getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
-                    Log.i("values", String.valueOf(values));
-                }
+
             }
-            getSupportLoaderManager().initLoader(0, null, this);
+            getPreview(url);
 
-              /*CardFrontFragment cardFrontFragment = new CardFrontFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.frame_layout_container, cardFrontFragment)
-                    .commit();*/
 
+        }
+
+        getSupportLoaderManager().initLoader(0, null, this);
+
+      /* CardFrontFragment cardFrontFragment = new CardFrontFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container_front, cardFrontFragment)
+                .commit();
+
+        Bundle cursorBundle = new Bundle();
+        cursorBundle.putParcelableArrayList("cursorlist", cursorList);
+        cardFrontFragment.setArguments(cursorBundle);*/
+
+    }
+    public void getPreview(String url) {
+        this.url = url;
+        new getData().execute();
 
     }
 
+    @Override
+    public void onYelpClickListener(View v, int position) {
+
+    }
+
+    @Override
+    public void onYelpEmptyClickListener(View v, int position) {
+
+    }
+
+
+    public class getData extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = null;
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url).get();
+
+
+                //getImages
+                Elements imageElements = doc.select("meta[property=og:image]");
+                if (imageElements.size() > 0) {
+                    String image = imageElements.attr("content");
+                    if (!image.isEmpty()) {
+                       result = resolveURL(url, image);
+
+                    }
+                }
+                if (result.isEmpty()) {
+                    String src = doc.select("link[rel=image_src]").attr("href");
+                    if (!src.isEmpty()) {
+                        result = (resolveURL(url, src));
+                    }
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            metaData.setImageUrl(result);
+            imageurl = metaData.getImageUrl();
+
+            ContentValues values = new ContentValues();
+
+            values.put(YelpContract.YelpEntry.KEY_NAME, name);
+            values.put(YelpContract.YelpEntry.KEY_URL, url);
+            if (imageurl != null) {
+                values.put(YelpContract.YelpEntry.KEY_IMAGE_URL, imageurl);
+            }
+
+            getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
+            Log.i("values", String.valueOf(values));
+
+
+
+
+        }
+    }
+
+    private String resolveURL(String url, String part) {
+        if (URLUtil.isValidUrl(part)) {
+            return part;
+        } else {
+            URI base_uri = null;
+            try {
+                base_uri = new URI(url);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            base_uri = base_uri.resolve(part);
+            return base_uri.toString();
+        }
+    }
 
 
 
@@ -146,6 +231,11 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()) {
+            case R.id.clear_choices:
+
+                getContentResolver().delete(YelpContract.YelpEntry.CONTENT_URI, null, null);
+
+
             case R.id.choos_u:
                 return true;
 
@@ -172,11 +262,13 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cursorList.clear();
         restaurantFromCursor(data);
         yelpCursorAdapter = new YelpCursorAdapter(NewActivity.this, cursorList);
         restaurantList = findViewById(R.id.choose_recyclerview);
-        restaurantList.setLayoutManager(new GridLayoutManager(context, 2));
+        restaurantList.setLayoutManager(new GridLayoutManager(context,2));
         restaurantList.setAdapter(yelpCursorAdapter);
+        saveToSharedPreference(cursorList);
 
 
     }
@@ -194,7 +286,8 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                     YelpModel yelpModel = new YelpModel();
                     yelpModel.name = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_NAME));
                     yelpModel.url = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_URL));
-                    //yelpModel.imageurl = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_IMAGE_URL));
+                    yelpModel.imageurl = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry.KEY_IMAGE_URL));
+                    yelpModel.idNumber = cursor.getString(cursor.getColumnIndex(YelpContract.YelpEntry._ID));
                     cursorList.add(yelpModel);
                 } while (cursor.moveToNext());
             }
@@ -204,7 +297,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    private void fliCard(){
+   /* private void fliCard(){
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -214,12 +307,27 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                         R.anim.card_flip_right_out,
                         R.anim.card_flip_left_in,
                         R.anim.card_flip_left_out)
-                .add(R.id.empty_container, new CardBackFragment())
+                .add(R.id.fragment_container_back, new CardBackFragment())
 
                 .addToBackStack(null)
 
                 .commit();
 
+
+    }*/
+
+    private void saveToSharedPreference(List<YelpModel> yelpModelList) {
+        //setting up sharedpreferences with name & mode
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //setting up the editor to edit sharepreference
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+        Gson gson = new Gson();
+        //converting ingredient list to json
+        String newJsonData = gson.toJson(yelpModelList);
+        editor.putString(PREF_KEY, newJsonData);
+        editor.apply();
 
     }
 

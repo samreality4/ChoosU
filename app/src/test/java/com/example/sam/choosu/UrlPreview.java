@@ -1,15 +1,15 @@
-package com.example.sam.choosu.Library;
+package com.example.sam.choosu;
 
 import android.os.AsyncTask;
 import android.webkit.URLUtil;
 
+import com.example.sam.choosu.Model.MetaData;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,7 +23,7 @@ public class UrlPreview {
     String url;
 
     public UrlPreview(ResponseListener responseListener) {
-        this.responseListener = responseListener;
+        //this.responseListener = responseListener;
         metaData = new MetaData();
 
     }
@@ -44,7 +44,7 @@ public class UrlPreview {
             try {
                 doc = Jsoup.connect(url).get();
 
-                Elements elements = doc.getElementsByTag("meta");
+                //Elements elements = doc.getElementsByTag("meta");
 
                 /*getTitle doc.select("meta[property=og:title]")
                 String title = doc.select("meta[property=og:title]").attr("content");
@@ -69,7 +69,7 @@ public class UrlPreview {
 
 
                 // getMediaType
-                Elements mediaTypes = doc.select("meta[name=medium]");
+               /* Elements mediaTypes = doc.select("meta[name=medium]");
                 String type = "";
                 if (mediaTypes.size() > 0) {
                     String media = mediaTypes.attr("content");
@@ -78,7 +78,7 @@ public class UrlPreview {
                 } else {
                     type = doc.select("meta[property=og:type]").attr("content");
                 }
-                metaData.setMediatype(type);
+                metaData.setMediatype(type);*/
 
 
                 //getImages
@@ -96,7 +96,7 @@ public class UrlPreview {
                         metaData.setImageUrl(resolveURL(url, src));
                     }
 
-                    for (Element element : elements) {
+                    /*for (Element element : elements) {
                         if (element.hasAttr("property")) {
                             String str_property = element.attr("property").toString().trim();
                             if (str_property.equals("og:url")) {
@@ -120,7 +120,7 @@ public class UrlPreview {
                         } else {
                             metaData.setUrl(uri.getHost());
                         }
-                    }
+                    }*/
 
                 }
 
@@ -138,7 +138,7 @@ public class UrlPreview {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            responseListener.onData(metaData);
+            //responseListener.onData(metaData);
         }
     }
 
