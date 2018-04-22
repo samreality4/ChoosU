@@ -8,27 +8,40 @@
     tools:context="com.example.sam.choosu.NewActivity"
    >
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:layout_gravity="center_horizontal"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="?android:attr/actionBarSize">
+        <include
+            layout="@layout/recyclerview_choose" />
 
 
-    <include
-        layout="@layout/recyclerview_choose"/>
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
 
+    </com.google.android.gms.ads.AdView>
+</RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -40,7 +53,4 @@
         android:scaleType="center"
         tools:layout_editor_absoluteX="302dp"
         tools:layout_editor_absoluteY="501dp" />
-
-
-
 </android.support.design.widget.CoordinatorLayout>
