@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -49,10 +50,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 
 
 public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        YelpCursorAdapter.yelpClickListener, YelpCursorEmptyCardAdapter.yelpEmptyClickListener{
+        YelpCursorAdapter.yelpClickListener{
 
     String [] array;
     String name;
@@ -67,7 +69,9 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     private static final String PREF_KEY = "prefkey";
     private AdView mAdView;
     String randomUrl;
-    int clickCount;
+    private int clickCount, time, seconds;
+    String count;
+    Timer timer;
 
 
 
@@ -84,6 +88,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         metaData = new MetaData();
 
 
+
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -96,28 +101,23 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
                 Collections.shuffle(cursorList);
                 restaurantList.setAdapter(yelpCursorAdapter);
-                if(clickCount == 1){
-                Toast.makeText(NewActivity.this,
-                        "Smash the button quickly to open up a random choice",
-                        Toast.LENGTH_SHORT).show();}
-
-                if (clickCount ++< 5) {
+                countDownTimer.start();
+                clickCount++;
+         if (clickCount == 5) {
+                    clickCount = 0;
                     Random random = new Random();
                     int index = random.nextInt(cursorList.size());
                     randomUrl = cursorList.get(index).getUrl();
-
-
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
                     intent.setData(Uri.parse(randomUrl));
                     context.startActivity(intent);
-
                 }
-                clickCount = 0;
             }
 
         });
+
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -130,7 +130,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
 
                 //already getting metadata without waiting for it to finish
-
 
             }
             getPreview(url);
@@ -161,10 +160,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    @Override
-    public void onYelpEmptyClickListener(View v, int position) {
-
-    }
 
 
     public class getData extends AsyncTask<String, Void, String> {
@@ -369,5 +364,17 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
+    CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            clickCount = 0;
+
+        }
+    };
 
 }
