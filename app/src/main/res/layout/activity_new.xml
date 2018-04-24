@@ -28,7 +28,8 @@
     android:layout_height="match_parent"
     android:paddingTop="?android:attr/actionBarSize">
         <include
-            layout="@layout/recyclerview_choose" />
+            layout="@layout/recyclerview_choose"
+            />
 
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -39,18 +40,20 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-
     </com.google.android.gms.ads.AdView>
-</RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="66dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|end"
+        android:layout_height="60dp"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_above="@+id/adView"
+        android:layout_alignRight="@+id/adView"
         app:srcCompat="@drawable/ic_shuffle"
         android:scaleType="center"
         tools:layout_editor_absoluteX="302dp"
         tools:layout_editor_absoluteY="501dp" />
+</RelativeLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>

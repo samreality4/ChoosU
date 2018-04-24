@@ -21,7 +21,7 @@ import java.util.List;
  * Created by sam on 3/27/18.
  */
 
-public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelper {
+public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private LayoutInflater inflater;
     private List<YelpModel> mData;
@@ -29,6 +29,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     String url;
     String imageUrl;
     String Name;
+    static int clickCount;
 
     public interface yelpClickListener{
         void onYelpClickListener(View v, int position);
@@ -48,15 +49,11 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.content_cardview, parent, false);
         final YelpCursorAdapter.MyHolder myHolder = new YelpCursorAdapter.MyHolder(view);
-       /* view.setOnClickListener(new View.OnClickListener(){
+       view.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                /*if (view.getVisibility() == View.VISIBLE) {
-                    view.setVisibility(View.INVISIBLE);
+            public void onClick(View v) {
 
-
-                }else{
-                if(listener !=null) {
+                if (listener != null) {
 
                     listener.onYelpClickListener(v, myHolder.getAdapterPosition());
                     YelpModel current = mData.get(myHolder.getAdapterPosition());
@@ -71,11 +68,13 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
                 }
+            }
 
-            }*/
+            });
 
         return myHolder;
     }
+
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {

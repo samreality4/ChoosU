@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -13,19 +14,28 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sam.choosu.Model.MetaData;
 import com.example.sam.choosu.Model.YelpModel;
 import com.example.sam.choosu.Database.YelpContract;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
@@ -38,6 +48,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -49,12 +60,16 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     String imageurl;
     private RecyclerView restaurantList;
     private YelpCursorAdapter yelpCursorAdapter;
-    private YelpCursorEmptyCardAdapter yelpCursorEmptyCardAdapter;
     ArrayList<YelpModel> cursorList = new ArrayList<>();
     Context context;
     MetaData metaData;
     private static final String PREF_NAME = "prefname";
     private static final String PREF_KEY = "prefkey";
+    private AdView mAdView;
+    String randomUrl;
+    int clickCount;
+
+
 
     ConstraintLayout constraintLayout;
 
@@ -69,15 +84,38 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         metaData = new MetaData();
 
 
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //fliCard();
-                //cardView.setVisibility(View.INVISIBLE);
+
                 Collections.shuffle(cursorList);
-                    restaurantList.setAdapter(yelpCursorEmptyCardAdapter);
+                restaurantList.setAdapter(yelpCursorAdapter);
+                if(clickCount == 1){
+                Toast.makeText(NewActivity.this,
+                        "Smash the button quickly to open up a random choice",
+                        Toast.LENGTH_SHORT).show();}
+
+                if (clickCount ++< 5) {
+                    Random random = new Random();
+                    int index = random.nextInt(cursorList.size());
+                    randomUrl = cursorList.get(index).getUrl();
+
+
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(randomUrl));
+                    context.startActivity(intent);
+
                 }
+                clickCount = 0;
+            }
 
         });
 
@@ -324,7 +362,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         editor.clear();
         editor.apply();
         Gson gson = new Gson();
-        //converting ingredient list to json
+        //converting list to json
         String newJsonData = gson.toJson(yelpModelList);
         editor.putString(PREF_KEY, newJsonData);
         editor.apply();

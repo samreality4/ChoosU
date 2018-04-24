@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/choose_recyclerview"
     android:layoutAnimation="@anim/layout_animation_fall_down"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_above="@+id/adView">
     <!--layout_behavior is so that it won't overlap by the appbar-->
 
 </android.support.v7.widget.RecyclerView>
