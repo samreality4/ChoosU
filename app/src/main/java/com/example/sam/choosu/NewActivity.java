@@ -103,7 +103,13 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 restaurantList.setAdapter(yelpCursorAdapter);
                 countDownTimer.start();
                 clickCount++;
-         if (clickCount == 5) {
+                if(clickCount < 4) {
+                    Toast.makeText(NewActivity.this,
+                            "Smash Me Faster!", Toast.LENGTH_SHORT).show();
+
+                }else if (clickCount == 5) {
+                    Toast.makeText(NewActivity.this,
+                            "Happy Eating", Toast.LENGTH_SHORT).show();
                     clickCount = 0;
                     Random random = new Random();
                     int index = random.nextInt(cursorList.size());
