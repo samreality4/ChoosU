@@ -3,7 +3,7 @@ package com.example.sam.choosu;
 import android.os.AsyncTask;
 import android.webkit.URLUtil;
 
-import com.example.sam.choosu.Model.MetaData;
+import com.SXG.sam.choosu.Model.MetaData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

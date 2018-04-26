@@ -2,7 +2,7 @@ package com.example.sam.choosu;
 
 import android.view.View;
 
-import com.example.sam.choosu.Model.MetaData;
+import com.SXG.sam.choosu.Model.MetaData;
 
 /**
  * Created by sam on 4/4/18.

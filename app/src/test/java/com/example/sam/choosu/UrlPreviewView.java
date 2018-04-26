@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.sam.choosu.Model.MetaData;
+import com.SXG.sam.choosu.Model.MetaData;
 import com.squareup.picasso.Picasso;
 
 /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sam.choosu">
+    package="com.SXG.sam.choosu">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FirstStartActivity"
+            android:name="com.SXG.sam.choosu.FirstStartActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewActivity"
+            android:name="com.SXG.sam.choosu.NewActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <!--<intent-filter>
@@ -40,27 +40,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.sam.choosu.PastActivity"
+            android:name="com.SXG.sam.choosu.PastActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".GoogleService.SignIn"
+            android:name="com.SXG.sam.choosu.GoogleService.SignIn"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <provider
             android:authorities="com.example.sam.choosu"
-            android:name=".Database.YelpProvider"
+            android:name="com.SXG.sam.choosu.Database.YelpProvider"
             android:exported="false"
             android:syncable="true"/>
         <provider
             android:authorities="com.example.sam.choosenU"
-            android:name=".SavedDatabase.YelpSavedProvider"
+            android:name="com.SXG.sam.choosu.SavedDatabase.YelpSavedProvider"
             android:exported="false"
             android:splitName="true"/>
 
         <receiver
             android:label="Example Widget"
-            android:name=".Widget.NewAppWidgetProvider" >
+            android:name="com.SXG.sam.choosu.Widget.NewAppWidgetProvider" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -70,7 +70,7 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <service android:name=".Widget.NewAppRemoteViewsService"
+        <service android:name="com.SXG.sam.choosu.Widget.NewAppRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 

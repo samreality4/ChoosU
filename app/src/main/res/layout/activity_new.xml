@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sam.choosu.NewActivity"
+    tools:context="com.example.sam.choosu.com.SXG.sam.choosu.NewActivity"
    >
 
 
@@ -39,7 +39,7 @@
         ads:adSize="SMART_BANNER"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adUnitId="ca-app-pub-8546727732422608/3613936171">
+        ads:adUnitId="@string/test_ad_Id">
     </com.google.android.gms.ads.AdView>
 
     <android.support.design.widget.FloatingActionButton
