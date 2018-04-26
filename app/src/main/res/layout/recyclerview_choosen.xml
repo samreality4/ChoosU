@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:id="@+id/choosen_recyclerview"
-   >
+    android:layoutAnimation="@anim/layout_animation_fall_down"
+    android:layout_above="@+id/past_adView"
+    app:stackFromEnd="true"
+    app:reverseLayout="true"
+    android:layout_gravity="center">
+
 </android.support.v7.widget.RecyclerView>

@@ -31,12 +31,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sam.choosu.GoogleService.SignIn;
 import com.example.sam.choosu.Model.MetaData;
 import com.example.sam.choosu.Model.YelpModel;
 import com.example.sam.choosu.Database.YelpContract;
+import com.example.sam.choosu.SavedDatabase.YelpSavedContract;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
@@ -51,6 +55,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+
+import static com.example.sam.choosu.GoogleService.SignIn.personName;
 
 
 public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
@@ -69,21 +75,30 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     private static final String PREF_KEY = "prefkey";
     private AdView mAdView;
     String randomUrl;
-    private int clickCount, time, seconds;
-    String count;
-    Timer timer;
+    String randomName;
+    String randomImageUrl;
+    private int clickCount;
+    SignIn signIn;
 
 
-
-    ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //moveTaskToBack(true);
         setContentView(R.layout.activity_new);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account !=null){
+            personName = account.getGivenName();}else
+                personName = "ChoosU";
+        if(personName !=null){
+            getSupportActionBar().setTitle(personName);}
+
+
         context = getApplicationContext();
         metaData = new MetaData();
 
@@ -103,23 +118,39 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 restaurantList.setAdapter(yelpCursorAdapter);
                 countDownTimer.start();
                 clickCount++;
-                if(clickCount < 4) {
+                if(clickCount < 2) {
                     Toast.makeText(NewActivity.this,
-                            "Smash Me Faster!", Toast.LENGTH_SHORT).show();
+                            "Smash Faster to Proceed!", Toast.LENGTH_SHORT).show();
 
                 }else if (clickCount == 5) {
-                    Toast.makeText(NewActivity.this,
-                            "Happy Eating", Toast.LENGTH_SHORT).show();
-                    clickCount = 0;
                     Random random = new Random();
                     int index = random.nextInt(cursorList.size());
                     randomUrl = cursorList.get(index).getUrl();
+                    randomName = cursorList.get(index).getName();
+                    randomImageUrl= cursorList.get(index).getYelpImageurl();
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
                     intent.setData(Uri.parse(randomUrl));
                     context.startActivity(intent);
-                }
+
+                    Toast.makeText(NewActivity.this,
+                            "Happy Eating", Toast.LENGTH_SHORT).show();
+
+                    /*Intent intent1 = new Intent(context, PastActivity.class);
+                    YelpModel yelpModel = cursorList.get(index);
+                    intent1.putExtra("Choosen", yelpModel);*/
+
+
+                    ContentValues values = new ContentValues();
+
+                    values.put(YelpSavedContract.YelpEntry.KEY_NAME, randomName);
+                    values.put(YelpSavedContract.YelpEntry.KEY_URL, randomUrl);
+                        values.put(YelpSavedContract.YelpEntry.KEY_IMAGE_URL, randomImageUrl);
+
+
+                    getContentResolver().insert(YelpSavedContract.YelpEntry.CONTENT_URI, values);
+                    }
             }
 
         });
@@ -133,6 +164,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
+
 
 
                 //already getting metadata without waiting for it to finish
@@ -273,14 +305,21 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             case R.id.clear_choices:
 
                 getContentResolver().delete(YelpContract.YelpEntry.CONTENT_URI, null, null);
+                break;
 
 
             case R.id.choos_u:
-                return true;
+               return true;
 
             case R.id.choosen_u:
-                return true;
-
+                Intent intent = new Intent(context, PastActivity.class);
+                startActivity(intent);
+                Toast.makeText(context, "Past Choosen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.profile:
+                Intent intent1 = new Intent(context, SignIn.class);
+                startActivity(intent1);
+                break;
 
         }
 
@@ -370,7 +409,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
+    CountDownTimer countDownTimer = new CountDownTimer(1000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
 

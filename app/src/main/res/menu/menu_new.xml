@@ -20,7 +20,9 @@
         android:icon="@drawable/ic_favorite"
         android:orderInCategory="2" />
     <item
-        android:id="@+id/sign_out"
-        app:showAsAction="ifRoom"
-        android:title="Sign Off" />
+        android:id="@+id/profile"
+        app:showAsAction="always"
+        android:title="profile"
+        android:icon="@drawable/ic_profile"
+        android:orderInCategory="3"/>
 </menu>

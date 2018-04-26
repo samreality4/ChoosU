@@ -1,5 +1,6 @@
 package com.example.sam.choosu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +22,7 @@ import java.util.List;
  * Created by sam on 3/27/18.
  */
 
-public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context mContext;
     private LayoutInflater inflater;
     private List<YelpModel> mData;
@@ -76,6 +77,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final YelpCursorAdapter.MyHolder myHolder = (YelpCursorAdapter.MyHolder) holder;
@@ -88,13 +90,12 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if(!current.getYelpImageurl().isEmpty()) {
                 Picasso.get()
                         .load(current.getYelpImageurl())
-                        .resize(350, 300)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .fit()
                         .into(((MyHolder) holder).image);
 
             }
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -112,15 +113,8 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             image = itemView.findViewById(R.id.image);
             //backside = itemView.findViewById(R.id.back_side);
 
-
-
-
         }
-
-
     }
-
-
 
     }
 

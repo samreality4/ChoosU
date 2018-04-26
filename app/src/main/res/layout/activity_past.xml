@@ -26,9 +26,25 @@
     </android.support.design.widget.AppBarLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?android:attr/actionBarSize">
     <include
-        layout="@layout/recyclerview_choose"/>
+        layout="@layout/recyclerview_choosen"
+        />
 
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/past_adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adUnitId="ca-app-pub-8546727732422608/3613936171">
+    </com.google.android.gms.ads.AdView>
+</RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
