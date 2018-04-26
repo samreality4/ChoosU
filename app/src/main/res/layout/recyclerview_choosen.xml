@@ -7,8 +7,6 @@
     android:id="@+id/choosen_recyclerview"
     android:layoutAnimation="@anim/layout_animation_fall_down"
     android:layout_above="@+id/past_adView"
-    app:stackFromEnd="true"
-    app:reverseLayout="true"
     android:layout_gravity="center">
 
 </android.support.v7.widget.RecyclerView>

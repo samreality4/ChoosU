@@ -27,13 +27,14 @@ public class FirstStartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean alreadyRan = sharedPreferences.getBoolean(getString(R.string.already_ran), false);
         if (!alreadyRan) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.already_ran), Boolean.TRUE);
-            editor.commit();
+            editor.apply();
 
         } else {
             Intent intent = new Intent(this, NewActivity.class);
@@ -44,7 +45,6 @@ public class FirstStartActivity extends AppCompatActivity {
         setContentView(R.layout.first_time_layout);
         imageView = findViewById(R.id.first_image);
         textView = findViewById(R.id.first_text);
-        context = getApplicationContext();
 
         FloatingActionButton firstFab = findViewById(R.id.first_fab);
         firstFab.setOnClickListener(new View.OnClickListener() {

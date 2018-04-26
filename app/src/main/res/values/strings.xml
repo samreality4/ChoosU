@@ -6,7 +6,7 @@
     <string name="already_ran">already ran</string>
     <string name="welcome_page_shareicon">To use this App, first install Yelp and go to the restaurant of your choice and find the share button as circled.</string>
     <string name="welcome_page_sharemenu">Then the share menu opens up, locate and click on the App Icon as circled in the picture.</string>
-    <string name="welcome_page_randomfab">Kindly press backward if you wish to add more restaurants. To have our randomly select the restaurant for you simply SMASH THE CIRCLED BUTTON QUICKLY FIVE TIMES!</string>
-    <string name="welcome_page_finalwelcome">After Smashing, the restaurant of your choice(not) will pop up.  Happy Eating!!!</string>
+    <string name="welcome_page_randomfab">Kindly press backward if you wish to add more restaurants. Smash the circled button 5 times quickly to randomly choose a restaurant.</string>
+    <string name="welcome_page_finalwelcome">After Smashing, the restaurant of apps choice opens.  Happy Eating!!!</string>
 
 </resources>
