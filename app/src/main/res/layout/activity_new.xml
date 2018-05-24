@@ -31,19 +31,6 @@
     android:layout_height="match_parent"
     android:paddingTop="?android:attr/actionBarSize">
 
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:background="@drawable/ic_add"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:layout_centerInParent="true"
-        android:stateListAnimator="@null"
-        android:elevation="2dp"
-        android:translationZ="2dp"
-        android:clickable="true"
-        android:focusable="true" />
 
     <include
         layout="@layout/recyclerview_choose" />
@@ -66,7 +53,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_above="@+id/adView"
         android:layout_alignRight="@+id/adView"
-        app:srcCompat="@drawable/ic_shuffle"
+        app:srcCompat="@drawable/ic_add"
         android:scaleType="center"
         tools:layout_editor_absoluteX="302dp"
         tools:layout_editor_absoluteY="501dp"

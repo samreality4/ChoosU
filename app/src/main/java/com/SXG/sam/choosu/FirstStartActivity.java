@@ -53,28 +53,28 @@ public class FirstStartActivity extends AppCompatActivity {
             clickCount++;
             if(clickCount == 1){
                 Picasso.get()
+                        .load(R.drawable.newpageone)
+                        .fit()
+                        .into(imageView);
+                textView.setText("You can go directly the Yelp add by clicking the add button.");
+                    } else if (clickCount == 2) {
+                Picasso.get()
                         .load(R.drawable.page_one)
                         .fit()
                         .into(imageView);
                 textView.setText(R.string.welcome_page_shareicon);
-                    } else if (clickCount == 2) {
+                        } else if (clickCount == 3) {
                 Picasso.get()
                         .load(R.drawable.page_two)
                         .fit()
                         .into(imageView);
                 textView.setText(R.string.welcome_page_sharemenu);
-                        } else if (clickCount == 3) {
-                Picasso.get()
-                        .load(R.drawable.page_three)
-                        .fit()
-                        .into(imageView);
-                textView.setText(R.string.welcome_page_randomfab);
                             } else if (clickCount == 4) {
                 Picasso.get()
-                        .load(R.drawable.page_four)
+                        .load(R.drawable.newpagethree)
                         .fit()
                         .into(imageView);
-                textView.setText(R.string.welcome_page_finalwelcome);
+                textView.setText("Shake your phone to let this app choose for you!");
                                 } else if (clickCount == 5) {
                                     Intent intent = new Intent(context, NewActivity.class);
                                     startActivity(intent);
