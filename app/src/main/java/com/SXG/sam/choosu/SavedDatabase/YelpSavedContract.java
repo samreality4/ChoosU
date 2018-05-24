@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
  */
 
 public class YelpSavedContract {
-    public static final String AUTHORITY ="com.example.sam.choosenU";
+    public static final String AUTHORITY ="com.SXG.sam.choosenU";
     public static final String PATH_TASKS="YelpDB";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/");
 

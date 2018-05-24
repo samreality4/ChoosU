@@ -33,23 +33,10 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/restaurant_pictures"/>
     </android.support.constraint.ConstraintLayout>
 
 
-
-        <!--<android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/back_constraint">
-
-
-            <ImageView
-                android:background="@color/colorPrimaryDark"
-                android:id="@+id/back_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.constraint.ConstraintLayout>-->
 
 </android.support.v7.widget.CardView>

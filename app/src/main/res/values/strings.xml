@@ -10,5 +10,28 @@
     <string name="welcome_page_finalwelcome">After Smashing, the restaurant of apps choice opens.  Happy Eating!!!</string>
     <string name="ad_id">ca-app-pub-8546727732422608/3613936171</string>
     <string name="test_ad_Id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="tutorial_pictures">tutorial pictures</string>
+    <string name="restaurant_pictures">restaurant pictures</string>
+    <string name="Randomize_Button">Button to Randomize</string>
+    <string name="Button_Next">Button to move to next screen</string>
+    <string name="clear">clear</string>
+    <string name="choose">Choose</string>
+    <string name="choosen">Choosen</string>
+    <string name="profile">profile</string>
+    <string name="_1">1</string>
+    <string name="cafe">CAFE</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="restaurants_loaded">Restaurants Loaded</string>
+    <string name="Sign_in_hint">Sign in to have your name displayed on the left corner!</string>
+    <string name="Past_Choosen">Past Choosen</string>
+    <string name="tag_values">values</string>
+    <string name="text_plain">text/plain</string>
+    <string name="Smash_Toast">Smash Faster to Proceed!</string>
+    <string name="happy_toast">Happy Eating</string>
+    <string name="ChoosU">ChoosU</string>
+    <string name="New_Choices">New Choices</string>
+    <string name="Error_Sign_In">Sign in fail, Please try again later.</string>
+    <string name="visibility">visiblility</string>
+    <string name="shakeitmore">shake it more</string>
 
 </resources>

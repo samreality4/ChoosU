@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sam.choosu.com.SXG.sam.choosu.NewActivity"
+    tools:context="com.SXG.sam.choosu.NewActivity"
    >
 
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -24,12 +26,27 @@
         </android.support.design.widget.AppBarLayout>
 
 <RelativeLayout
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?android:attr/actionBarSize">
-        <include
-            layout="@layout/recyclerview_choose"
-            />
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/ic_add"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:layout_centerInParent="true"
+        android:stateListAnimator="@null"
+        android:elevation="2dp"
+        android:translationZ="2dp"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <include
+        layout="@layout/recyclerview_choose" />
 
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -39,7 +56,7 @@
         ads:adSize="SMART_BANNER"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adUnitId="@string/test_ad_Id">
+        ads:adUnitId="@string/ad_id">
     </com.google.android.gms.ads.AdView>
 
     <android.support.design.widget.FloatingActionButton
@@ -52,7 +69,8 @@
         app:srcCompat="@drawable/ic_shuffle"
         android:scaleType="center"
         tools:layout_editor_absoluteX="302dp"
-        tools:layout_editor_absoluteY="501dp" />
+        tools:layout_editor_absoluteY="501dp"
+        android:contentDescription="@string/Randomize_Button"/>
 </RelativeLayout>
 
 

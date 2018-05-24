@@ -16,8 +16,6 @@ import java.util.List;
 
 public class NewAppRemoteViewsService extends RemoteViewsService {
 
-    int n;
-
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -23,6 +28,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.SXG.sam.choosu.Model.MetaData;
@@ -31,6 +38,7 @@ import com.SXG.sam.choosu.GoogleService.SignIn;
 import com.SXG.sam.choosu.Model.YelpModel;
 import com.SXG.sam.choosu.Database.YelpContract;
 import com.SXG.sam.choosu.R;
+import com.SXG.sam.choosu.Widget.NewAppWidgetProvider;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -54,8 +62,9 @@ import static com.SXG.sam.choosu.GoogleService.SignIn.personName;
 
 
 public class NewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        YelpCursorAdapter.yelpClickListener {
+        YelpCursorAdapter.yelpClickListener,SensorEventListener {
 
+    private static final int LIST_ID = 100;
     String[] array;
     String name;
     String url;
@@ -72,7 +81,13 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     String randomName;
     String randomImageUrl;
     private int clickCount;
-    SignIn signIn;
+    String SAVED_LAYOUT_MANAGER;
+    Parcelable listState;
+    Button button;
+    private SensorManager sensorManager;
+    private long lastUpdate;
+
+
 
 
     @Override
@@ -83,6 +98,9 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lastUpdate = System.currentTimeMillis();
 
         //check to see if account is already there
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -131,12 +149,21 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             }
         });
 
+        button = findViewById(R.id.add_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openYelp(v);
+            }
+        });
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!cursorList.isEmpty()){
                 Collections.shuffle(cursorList);
                 restaurantList.setAdapter(yelpCursorAdapter);
 
@@ -145,7 +172,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 clickCount++;
                 if (clickCount < 2) {
                     Toast.makeText(NewActivity.this,
-                            "Smash Faster to Proceed!", Toast.LENGTH_SHORT).show();
+                            R.string.Smash_Toast, Toast.LENGTH_SHORT).show();
                 } else if (clickCount == 5) {
                     Random random = new Random();
                     int index = random.nextInt(cursorList.size());
@@ -159,13 +186,15 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                     context.startActivity(intent);
 
                     Toast.makeText(NewActivity.this,
-                            "Happy Eating", Toast.LENGTH_SHORT).show();
+                            R.string.happy_toast, Toast.LENGTH_SHORT).show();
 
                     ContentValues values = new ContentValues();
+
                     values.put(YelpSavedContract.YelpEntry.KEY_NAME, randomName);
                     values.put(YelpSavedContract.YelpEntry.KEY_URL, randomUrl);
                     values.put(YelpSavedContract.YelpEntry.KEY_IMAGE_URL, randomImageUrl);
                     getContentResolver().insert(YelpSavedContract.YelpEntry.CONTENT_URI, values);
+                    }
 
                 }
             }
@@ -179,7 +208,7 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
+            if (getString(R.string.text_plain).equals(type)) {
                 handleSendText(intent);
 
                 //already getting metadata without waiting for it to finish
@@ -187,11 +216,9 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             }
             getPreview(url);
 
-
         }
 
         getSupportLoaderManager().initLoader(0, null, this);
-
     }
 
     public void getPreview(String url) {
@@ -202,6 +229,81 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     @Override
     public void onYelpClickListener(View v, int position) {
+
+    }
+
+    public void openYelp(View view) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://m.yelp.com"));
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            getAccerlerometer(event);
+        }
+
+    }
+
+    private void getAccerlerometer(SensorEvent event){
+        float[] values = event.values;
+
+        float x = values[0];
+        float y = values[1];
+        float z = values[2];
+
+        float accelationSquareRoot = (x * x + y * y + z * z)
+                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        long actualTime = event.timestamp;
+        if(accelationSquareRoot >=2){
+            if(actualTime - lastUpdate < 200){
+                return;
+
+            }
+
+            lastUpdate = actualTime;
+            if(!cursorList.isEmpty()){
+                Collections.shuffle(cursorList);
+                restaurantList.setAdapter(yelpCursorAdapter);
+                countDownTimer.start();
+                //for every click or every call clickCount will increase by 1
+                clickCount++;
+                if (clickCount < 5) {
+                    Toast.makeText(NewActivity.this,
+                            R.string.shakeitmore, Toast.LENGTH_SHORT).show();
+                } else if (clickCount == 10) {
+                    Random random = new Random();
+                    int index = random.nextInt(cursorList.size());
+                    randomUrl = cursorList.get(index).getUrl();
+                    randomName = cursorList.get(index).getName();
+                    randomImageUrl = cursorList.get(index).getYelpImageurl();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(randomUrl));
+                    context.startActivity(intent);
+
+                    Toast.makeText(NewActivity.this,
+                            R.string.happy_toast, Toast.LENGTH_SHORT).show();
+
+                    ContentValues values2 = new ContentValues();
+
+                    values2.put(YelpSavedContract.YelpEntry.KEY_NAME, randomName);
+                    values2.put(YelpSavedContract.YelpEntry.KEY_URL, randomUrl);
+                    values2.put(YelpSavedContract.YelpEntry.KEY_IMAGE_URL, randomImageUrl);
+                    getContentResolver().insert(YelpSavedContract.YelpEntry.CONTENT_URI, values2);
+                }
+
+            }
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
@@ -249,6 +351,8 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             metaData.setImageUrl(result);
             imageurl = metaData.getImageUrl();
 
+            button.setVisibility(View.GONE);
+
             ContentValues values = new ContentValues();
 
             values.put(YelpContract.YelpEntry.KEY_NAME, name);
@@ -258,7 +362,9 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             }
 
             getContentResolver().insert(YelpContract.YelpEntry.CONTENT_URI, values);
-            Log.i("values", String.valueOf(values));
+            Log.i(getString(R.string.tag_values), String.valueOf(values));
+            NewAppWidgetProvider.toBroadCast(context);
+
 
 
         }
@@ -308,6 +414,8 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             case R.id.clear_choices:
 
                 getContentResolver().delete(YelpContract.YelpEntry.CONTENT_URI, null, null);
+                NewAppWidgetProvider.toBroadCast(context);
+                button.setVisibility(View.VISIBLE);
                 break;
 
 
@@ -315,15 +423,17 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
                 return true;
 
             case R.id.choosen_u:
+                finish();
                 Intent intent = new Intent(context, PastActivity.class);
                 startActivity(intent);
-                Toast.makeText(context, "Past Choosen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.Past_Choosen, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.profile:
+                finish();
                 Intent intent1 = new Intent(context, SignIn.class);
                 startActivity(intent1);
                 Toast.makeText(context,
-                        "Sign in to have your name displayed on the left corner!",
+                        R.string.Sign_in_hint,
                         Toast.LENGTH_SHORT).show();
                 break;
 
@@ -355,13 +465,26 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
         saveToSharedPreference(cursorList);
 
 
+
+
+        //getSupportLoaderManager().restartLoader(0, null, this);
+
+        /*if(listState !=null){
+        restaurantList.getLayoutManager().onRestoreInstanceState(listState);}*/
+
+
     }
 
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        //getSupportLoaderManager().restartLoader(LIST_ID, null, this);
 
     }
+
+   /* void stopLoader(int id){
+        getSupportLoaderManager().destroyLoader(id);
+    }*/
 
     private List<YelpModel> restaurantFromCursor(Cursor cursor) {
         if (cursor != null) {
@@ -381,24 +504,8 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-   /* private void fliCard(){
-
-        getSupportFragmentManager()
-                .beginTransaction()
-
-                .setCustomAnimations(
-                        R.anim.card_flip_right_in,
-                        R.anim.card_flip_right_out,
-                        R.anim.card_flip_left_in,
-                        R.anim.card_flip_left_out)
-                .add(R.id.fragment_container_back, new CardBackFragment())
-
-                .addToBackStack(null)
-
-                .commit();
 
 
-    }*/
 
     private void saveToSharedPreference(List<YelpModel> yelpModelList) {
         //setting up sharedpreferences with name & mode
@@ -427,5 +534,40 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
         }
     };
+
+    /*protected void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
+        listState = restaurantList.getLayoutManager().onSaveInstanceState();
+        state.putParcelable(SAVED_LAYOUT_MANAGER, listState);
+    }
+
+    /*@Override
+    protected void onRestoreInstanceState(Bundle state){
+        super.onRestoreInstanceState(state);
+        listState=state.getParcelable(SAVED_LAYOUT_MANAGER);
+    }*/
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        SharedPreferences sharedPreferences = getSharedPreferences("prefsfilename", MODE_PRIVATE);
+        SharedPreferences.Editor presEditor = sharedPreferences.edit();
+        presEditor.putInt(getString(R.string.visibility), button.getVisibility());
+        presEditor.apply();
+        sensorManager.unregisterListener(this);
+
+    }
+
+    @Override
+    protected void onResume(){
+     super.onResume();
+     SharedPreferences sharedPreferences = getSharedPreferences("prefsfilename", MODE_PRIVATE);
+        if(sharedPreferences != null){
+            int visibility = sharedPreferences.getInt(getString(R.string.visibility), 0);
+            button.setVisibility(visibility);}
+            sensorManager.registerListener(this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
 }

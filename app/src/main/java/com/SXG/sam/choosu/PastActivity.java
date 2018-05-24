@@ -51,7 +51,7 @@ YelpCursorAdapter.yelpClickListener{
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account !=null){
             personName = account.getGivenName();}else
-            personName = "ChoosU";
+            personName = getString(R.string.ChoosU);
         if(personName !=null){
             getSupportActionBar().setTitle(personName);}
 
@@ -113,19 +113,21 @@ YelpCursorAdapter.yelpClickListener{
                 break;
 
             case R.id.choos_u:
+                finish();
                 Intent intent = new Intent(context, NewActivity.class);
                 startActivity(intent);
-                Toast.makeText(context, "New Choices", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.New_Choices, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.choosen_u:
                 return true;
 
             case R.id.profile:
+                finish();
                 Intent intent1 = new Intent(context, SignIn.class);
                 startActivity(intent1);
                 Toast.makeText(context,
-                        "Sign in to have your name displayed on the left corner!",
+                        R.string.Sign_in_hint,
                         Toast.LENGTH_SHORT).show();
                 break;
 

@@ -19,9 +19,9 @@ import com.squareup.picasso.Picasso;
 
 public class FirstStartActivity extends AppCompatActivity {
     ImageView imageView;
-    int clickCount;
     Context context;
     TextView textView;
+    private int clickCount;
 
 
     @Override

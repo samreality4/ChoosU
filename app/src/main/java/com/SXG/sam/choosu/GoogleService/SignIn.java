@@ -75,16 +75,18 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
 
             case R.id.choos_u:
+                finish();
                 Intent intent1 = new Intent(context, NewActivity.class);
                 startActivity(intent1);
-                Toast.makeText(context, "New Choices", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.New_Choices, Toast.LENGTH_SHORT).show();
                 break;
 
 
             case R.id.choosen_u:
+                finish();
                 Intent intent = new Intent(context, PastActivity.class);
                 startActivity(intent);
-                Toast.makeText(context, "Past Choosen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.Past_Choosen, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.profile:
@@ -140,6 +142,8 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(context,
+                    R.string.Error_Sign_In, Toast.LENGTH_SHORT).show();
             updateUI(null);
         }
     }
@@ -174,7 +178,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
             //findViewById(R.id.revoke_access_button).setVisibility(View.VISIBLE);
         } else {
            // mStatusTextView.setText(R.string.signed_out);
-            getSupportActionBar().setTitle("ChoosU");
+            getSupportActionBar().setTitle(R.string.ChoosU);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
