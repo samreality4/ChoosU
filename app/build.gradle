@@ -3,10 +3,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'ChoosUFinal'
-            keyPassword '@Capstone2018'
-            storeFile file('ChoosUFinal.jks')
-            storePassword '@Capstone2018'
+
         }
     }
     compileSdkVersion 26
@@ -42,4 +39,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:15.0.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
     implementation 'com.google.code.gson:gson:2.8.1'
+
 }
