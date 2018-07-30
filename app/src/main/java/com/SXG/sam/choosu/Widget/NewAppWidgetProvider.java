@@ -39,7 +39,6 @@ public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, 
     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_main);
 
     Intent intent = new Intent(context, NewAppRemoteViewsService.class);
-    //SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     views.setRemoteAdapter(R.id.list_view, intent);
 
     views.setEmptyView(R.id.list_view, R.id.empty_view);

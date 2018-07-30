@@ -43,7 +43,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.revoke_access_button).setOnClickListener(this);
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -171,18 +171,17 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
          getSupportActionBar().setTitle(personName);
-            //mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-            //findViewById(R.id.revoke_access_button).setVisibility(View.VISIBLE);
+
         } else {
-           // mStatusTextView.setText(R.string.signed_out);
+
             getSupportActionBar().setTitle(R.string.ChoosU);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            //findViewById(R.id.revoke_access_button).setVisibility(View.GONE);
+
         }
     }
 

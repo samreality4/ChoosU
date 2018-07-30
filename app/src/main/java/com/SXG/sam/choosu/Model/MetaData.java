@@ -37,15 +37,6 @@ public class MetaData {
     }
 
 
-    public void setSitename(String sitename){
-        this.sitename = sitename;
-    }
 
-    public String getMediatype(){
-        return mediatype;
-    }
-    public void setMediatype(String mediatype){
-        this.mediatype = mediatype;
-    }
 
 }

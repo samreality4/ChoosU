@@ -55,9 +55,6 @@ public class YelpModel implements Parcelable {
 
     }
 
-    public void setYelpImageurl(String imageurl){
-        this.imageurl = imageurl;
-    }
 
     @Override
     public int describeContents() {

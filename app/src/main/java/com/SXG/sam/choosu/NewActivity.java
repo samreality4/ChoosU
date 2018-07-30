@@ -82,9 +82,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
     String randomName;
     String randomImageUrl;
     private int clickCount;
-    String SAVED_LAYOUT_MANAGER;
-    Parcelable listState;
-    //Button button;
     private SensorManager sensorManager;
     private long lastUpdate;
 
@@ -169,14 +166,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             }
         });
 
-        /*button = findViewById(R.id.add_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openYelp(v);
-            }
-        });*/
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -185,13 +174,12 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             public void onClick(View view) {
 
                     openYelp(view);
-                    //it doesn't open because yelp is already opened.
+
             }
 
         });
 
         Intent intent = getIntent();
-        //intent.removeExtra("my_text");
         String action = intent.getAction();
         String type = intent.getType();
 
@@ -200,7 +188,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
             if (getString(R.string.text_plain).equals(type)) {
                 handleSendText(intent);
 
-                //already getting metadata without waiting for it to finish
 
             }
             getPreview(url);
@@ -469,9 +456,6 @@ public class NewActivity extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-   /* void stopLoader(int id){
-        getSupportLoaderManager().destroyLoader(id);
-    }*/
 
     private List<YelpModel> restaurantFromCursor(Cursor cursor) {
         if (cursor != null) {

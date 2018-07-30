@@ -26,9 +26,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<YelpModel> mData;
     public yelpClickListener listener;
     String url;
-    String imageUrl;
-    String Name;
-    static int clickCount;
+
 
     public interface yelpClickListener{
         void onYelpClickListener(View v, int position);
@@ -80,10 +78,7 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final YelpCursorAdapter.MyHolder myHolder = (YelpCursorAdapter.MyHolder) holder;
         YelpModel current = mData.get(position);
-        //myHolder.backside.setText("BACK");
-        //myHolder.backside.setVisibility(View.INVISIBLE);
-
-        //Log.e("error", current.getName());
+;
             myHolder.name.setText(current.getName());
             if(!current.getYelpImageurl().isEmpty()) {
                 Picasso.get()
@@ -103,13 +98,12 @@ public class YelpCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class MyHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView image;
-        TextView backside;
+
 
         public MyHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.name);
             image = itemView.findViewById(R.id.image);
-            //backside = itemView.findViewById(R.id.back_side);
 
         }
     }
