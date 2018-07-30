@@ -9,9 +9,7 @@ By using this app, you can:
 
 ## Screenshots
 
-![screen](app/src/main/res/drawable/pixelScreen.png){:class="img-responsive"}
-![screen](app/src/main/res/drawable/pixelScreen.png){:height="50%" width="50%"}
-![screen](app/src/main/res/drawable/pixelScreen.png){:height="700px" width="400px"}
+![screen](app/src/main/res/drawable/pixelScreen.png)
 
 ![screen](app/src/main/res/drawable/screenShot2.png)
 
