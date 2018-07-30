@@ -9,6 +9,10 @@ By using this app, you can:
 
 ## Screenshots
 
+<img src="https://github.com/samreality4/ChoosU/blob/master/app/src/main/res/drawable/screenShot2.png" 
+
+width="48">
+
 ![screen](app/src/main/res/drawable/pixelScreen.png)
 
 ![screen](app/src/main/res/drawable/screenShot2.png)
